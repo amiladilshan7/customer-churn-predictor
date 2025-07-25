@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Predictor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            box-sizing: border-box; /* Important */
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .predict-button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 6px;
+            border: none;
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .predict-button:hover {
+            background-color: #2980b9;
+        }
+        .prediction-result {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .low-risk {
+            background-color: #e8f5e9; /* Light Green */
+            color: #2e7d32; /* Dark Green */
+        }
+        .high-risk {
+            background-color: #ffebee; /* Light Red */
+            color: #c62828; /* Dark Red */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Customer Churn Predictor 🔮</h1>
+        <form action="/predict" method="post">
+
+            <div class="form-group">
+                <label for="tenure">Tenure (in months)</label>
+                <input type="number" id="tenure" name="tenure" placeholder="e.g., 12" required>
+            </div>
+
+            <div class="form-group">
+                <label for="monthlycharges">Monthly Charges</label>
+                <input type="number" step="any" id="monthlycharges" name="monthlycharges" placeholder="e.g., 70.5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="totalcharges">Total Charges</label>
+                <input type="number" step="any" id="totalcharges" name="totalcharges" placeholder="e.g., 1200.25" required>
+            </div>
+
+            <div class="form-group">
+                <label for="partner">Has a Partner?</label>
+                <select id="partner" name="partner" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="dependents">Has Dependents?</label>
+                <select id="dependents" name="dependents" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="phoneservice">Has Phone Service?</label>
+                <select id="phoneservice" name="phoneservice" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="paperlessbilling">Has Paperless Billing?</label>
+                <select id="paperlessbilling" name="paperlessbilling" required>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+            <label for="seniorcitizen">Is a Senior Citizen?</label>
+            <select id="seniorcitizen" name="seniorcitizen" required>
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+            </div>
+
+
+            <input type="hidden" name="MultipleLines_Yes" value="0">
+            <input type="hidden" name="OnlineSecurity_Yes" value="0">
+            <input type="hidden" name="OnlineBackup_Yes" value="0">
+            <input type="hidden" name="DeviceProtection_Yes" value="0">
+            <input type="hidden" name="TechSupport_Yes" value="0">
+            <input type="hidden" name="StreamingTV_Yes" value="0">
+            <input type="hidden" name="StreamingMovies_Yes" value="0">
+            <input type="hidden" name="Contract_One year" value="0">
+            <input type="hidden" name="Contract_Two year" value="0">
+            <input type="hidden" name="InternetService_Fiber optic" value="0">
+            <input type="hidden" name="PaymentMethod_Electronic check" value="0">
+
+            <button type="submit" class="predict-button">Predict Churn</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="prediction-result {{ prediction_class }}">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
