@@ -9,8 +9,7 @@ app = Flask(__name__)
 model = joblib.load('churn_model.joblib')
 
 # Load the column names from the training data (we'll need this)
-# You should save this from your notebook, or define it manually
-# For now, I will manually define the columns based on our notebook
+
 TRAIN_COLUMNS = ['SeniorCitizen', 'tenure', 'MonthlyCharges', 'TotalCharges', 'gender_Male', 'Partner_Yes', 'Dependents_Yes', 'PhoneService_Yes', 'MultipleLines_No phone service', 'MultipleLines_Yes', 'InternetService_Fiber optic', 'InternetService_No', 'OnlineSecurity_No internet service', 'OnlineSecurity_Yes', 'OnlineBackup_No internet service', 'OnlineBackup_Yes', 'DeviceProtection_No internet service', 'DeviceProtection_Yes', 'TechSupport_No internet service', 'TechSupport_Yes', 'StreamingTV_No internet service', 'StreamingTV_Yes', 'StreamingMovies_No internet service', 'StreamingMovies_Yes', 'Contract_One year', 'Contract_Two year', 'PaperlessBilling_Yes', 'PaymentMethod_Credit card (automatic)', 'PaymentMethod_Electronic check', 'PaymentMethod_Mailed check']
 
 @app.route('/')
@@ -35,7 +34,7 @@ def predict():
     ])
 
     # One-hot encode the input data to match the training columns
-    # This is a simplified way to ensure all columns are present
+    
     final_features = pd.DataFrame(columns=TRAIN_COLUMNS)
     final_features = pd.concat([final_features, input_data])
     final_features = final_features.fillna(0) # Fill any missing columns with 0
